@@ -1,0 +1,23 @@
+trigger:
+- develop
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+- task: UsePythonVersion@0
+  displayName: 'Use Python 3.7'
+  inputs:
+    versionSpec: 3.7
+
+- script:
+        python -m pip install --upgrade pip boto3
+  displayName: Install dependencies
+
+- task: PythonScript@0
+  displayName: 'Run a Python script'
+  env:
+    region: us-east-1
+  inputs:
+    scriptPath: 'lambda/edl_lambda_athena_role_based_grant.py'
+    workingDirectory: lambda
